@@ -18,7 +18,7 @@ def main():
                 python_list = json.load(f)
         
         # test input
-        n = 1876
+        n = 18653
 
         # instatiate url object for encoding
         url = UrlManager(n)

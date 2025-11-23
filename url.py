@@ -15,7 +15,8 @@ class UrlManager:
                 p_dict = {
 
                 }
-                p_dict[self.input] = output
+                string_input = str(self.input)
+                p_dict[output] = string_input
                 return p_dict
         
         
