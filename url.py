@@ -12,6 +12,10 @@ class UrlManager:
                         quotient = quotient // 62
                         output = output + self.base62[remainder]
                 output = output[::-1]
-                return output
+                p_dict = {
+
+                }
+                p_dict[self.input] = output
+                return p_dict
         
         
