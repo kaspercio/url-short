@@ -14,7 +14,7 @@ class UrlManager:
                         quotient = quotient // 62
                         output = output + self.base62[remainder]
                 output = output[::-1]
-                output = str(self.input)
+                output = str(output)
                 print(output)
                 self.python_dict[output] = self.link
                 return self.python_dict
