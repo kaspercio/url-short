@@ -10,24 +10,27 @@ def main():
         # create json file if not already exists
         if not json_directory.is_file():
                 with open(json_directory, "w") as f:
-                        json.dump([], f, indent = 4)
+                        json.dump({}, f, indent = 4)
                         print(f"urls.json initialised at {json_directory}")
 
         # write json to python dict
         with open(json_directory, "r") as f:
-                python_list = json.load(f)
+                python_dict = json.load(f)
         
         # test input
-        n = 18653
+        if python_dict:
+                new_id = max(int(k) for k in python_dict.keys()) + 1
+        else:
+                new_id = 1
+        link = "https://amazon.com"
 
         # instatiate url object for encoding
-        url = UrlManager(n)
-        url_dict = url.encode()
+        url = UrlManager(new_id, link, python_dict)
+        url.encode()
 
         # write the result to json
-        jsobject = JsonManager(python_list, url_dict)
+        jsobject = JsonManager(python_dict)
         jsobject.write_json(json_directory)
-        
 
 if __name__ == "__main__":
     main()

@@ -2,13 +2,11 @@ import json
 
 class JsonManager:
 
-        def __init__(self, list, p_dict: dict):
-                self.list = list
+        def __init__(self, p_dict: dict):
                 self.p_dict = p_dict    
                 
 
         def write_json(self, cd):
-                self.list.append(self.p_dict)
                 with open(cd, "w") as f:
-                        json.dump(self.list, f, indent=4)
+                        json.dump(self.p_dict, f, indent=4)
 
