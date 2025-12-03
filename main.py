@@ -16,7 +16,7 @@ async def root():
         return {"message": "Hello World"}
 
 # find and designate file path for json file
-json_directory = Path.home() / "urls.json" 
+json_directory = Path("urls.json")
 
 # create json file if not already exists
 if not json_directory.is_file():
