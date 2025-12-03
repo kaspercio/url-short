@@ -2,35 +2,65 @@ from url import UrlManager
 from json_object import JsonManager
 from pathlib import Path
 import json
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-def main():
-        # find and designate file path for json file
-        json_directory = Path.home() / "urls.json" 
-        
-        # create json file if not already exists
-        if not json_directory.is_file():
-                with open(json_directory, "w") as f:
-                        json.dump({}, f, indent = 4)
-                        print(f"urls.json initialised at {json_directory}")
+class ShortenRequest(BaseModel):
+        url: str
 
-        # write json to python dict
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+        return {"message": "Hello World"}
+
+# find and designate file path for json file
+json_directory = Path.home() / "urls.json" 
+
+# create json file if not already exists
+if not json_directory.is_file():
+        with open(json_directory, "w") as f:
+                json.dump({}, f, indent = 4)
+                print(f"urls.json initialised at {json_directory}")
+
+
+@app.post("/shorten")
+async def shorten(request: ShortenRequest):
+        # read data
         with open(json_directory, "r") as f:
                 python_dict = json.load(f)
-        
-        # test input
+
+        # calculate id
         if python_dict:
                 new_id = max(int(k) for k in python_dict.keys()) + 1
         else:
                 new_id = 1
-        link = "https://amazon.com"
 
-        # instatiate url object for encoding
-        url = UrlManager(new_id, link, python_dict)
-        url.encode()
+        # encoding in base 62
+        base62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        encoded_id = ""
+        
 
-        # write the result to json
-        jsobject = JsonManager(python_dict)
-        jsobject.write_json(json_directory)
+        quotient = new_id
+        while(quotient > 0):
+                remainder = quotient % 62
+                quotient = quotient // 62
+                encoded_id = encoded_id + base62[remainder]
+        encoded_id = encoded_id[::-1]
+        encoded_id = str(encoded_id)
+        print(encoded_id)
 
-if __name__ == "__main__":
-    main()
+        if not encoded_id:
+                encoded_id = "1"
+
+        # store the mapping Pydantic
+        python_dict[encoded_id] = request.url
+
+        # write to json file
+        with open(json_directory, "w") as f:
+               json.dump(python_dict, f, indent=4)
+
+        # return coded id and user's url
+        return{"encoded_id": encoded_id, "original_url": request.url}
+
