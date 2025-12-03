@@ -4,6 +4,8 @@ from pathlib import Path
 import json
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import RedirectResponse
+from fastapi.exceptions import HTTPException
 
 class ShortenRequest(BaseModel):
         url: str
@@ -64,3 +66,14 @@ async def shorten(request: ShortenRequest):
         # return coded id and user's url
         return{"encoded_id": encoded_id, "original_url": request.url}
 
+@app.get("/{encoded_id}")
+async def redirect_to_url(encoded_id: str):
+        
+        # read JSON
+        with open(json_directory, "r") as f:
+                python_dict = json.load(f)
+
+        if python_dict.get(encoded_id):
+                return RedirectResponse(url=python_dict.get(encoded_id))
+        else:
+                raise HTTPException(status_code=404, detail="Short code not found")
