@@ -3,6 +3,7 @@ import json
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import RedirectResponse
+from fastapi.responses import FileResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -20,9 +21,9 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-        return {"message": "Hello World"}
+@app.get("/", response_class=FileResponse)
+async def serve_frontend():
+        return FileResponse("frontend/index.html")
 
 # find and designate file path for json file
 json_directory = Path("urls.json")
