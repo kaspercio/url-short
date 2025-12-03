@@ -4,11 +4,20 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 class ShortenRequest(BaseModel):
         url: str
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins (for development)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -16,7 +25,7 @@ async def root():
         return {"message": "Hello World"}
 
 # find and designate file path for json file
-json_directory = Path.home() / "urls.json" 
+json_directory = Path("urls.json")
 
 # create json file if not already exists
 if not json_directory.is_file():
