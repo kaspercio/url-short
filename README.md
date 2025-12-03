@@ -2,7 +2,10 @@
 This is a URL shortener API made with FastAPI in Python. <br> The app takes the user's URL and generates an ID which is used
 to create the shortened URL.
 
-**Demo:** https://url-short-4bq6.onrender.com
+**Demo:** https://url-short-4bq6.onrender.com <br>
+
+<img width="1919" height="959" alt="image" src="https://github.com/user-attachments/assets/0b773f72-9c52-4653-9983-1436f6146a34" />
+
 
 ## Features
 - Stores user URL's in a JSON object.
@@ -13,6 +16,7 @@ to create the shortened URL.
 ## Technologies used
 - Python 3.10.12
 - FastApi 0.123.5
+- HTML, CSS JavaScript
 
 ## Local Installation
 1. **Clone the repository:**
@@ -71,9 +75,9 @@ curl -X POST "http://127.0.0.1:8000/shorten" \
 Visit `http://127.0.0.1:8000/1` in your browser and you'll be redirected to the original URL.
 
 ## Future Improvements
-- Frontend for using API
-- Remote data storage
-- URL Validation
+- ~~Frontend for using API~~
+- ~~URL Validation~~
+- User Analytics
 
 ## License
 MIT
